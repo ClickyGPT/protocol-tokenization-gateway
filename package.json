@@ -1,0 +1,35 @@
+{
+  "name": "protocol-tokenization-gateway",
+  "version": "1.0.0",
+  "description": "Stateless REST microservice for structured payload tokenization",
+  "main": "src/server.js",
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "nodemon src/server.js",
+    "test": "jest --runInBand",
+    "test:valid": "jest tests/runner.test.js --testNamePattern=valid",
+    "test:malformed": "jest tests/runner.test.js --testNamePattern=malformed",
+    "test:edge": "jest tests/runner.test.js --testNamePattern=edge",
+    "test:benchmark": "jest tests/runner.test.js --testNamePattern=benchmark",
+    "lint": "eslint src/ tests/"
+  },
+  "dependencies": {
+    "fastify": "^4.26.0",
+    "@fastify/ajv-compiler": "^3.5.0",
+    "pino": "^8.19.0",
+    "pino-pretty": "^11.0.0",
+    "uuid": "^9.0.0",
+    "pg": "^8.11.5",
+    "dotenv": "^16.4.5"
+  },
+  "devDependencies": {
+    "jest": "^29.7.0",
+    "supertest": "^7.0.0",
+    "nodemon": "^3.1.0",
+    "eslint": "^8.57.0"
+  },
+  "engines": {
+    "node": ">=20.0.0"
+  },
+  "license": "MIT"
+}

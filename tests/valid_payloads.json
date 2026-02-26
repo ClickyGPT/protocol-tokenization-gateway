@@ -1,0 +1,35 @@
+[
+  {
+    "description": "Golden case: space-split, comma-join",
+    "request": {
+      "command": "TOKENIZE",
+      "parsing_protocol": "DELIMITED_STRING_SPLIT",
+      "output_format_spec": { "split_delimiter": " ", "join_delimiter": "," },
+      "payload_data": "simulated descope ceasefireWidget optimizing l1X9!qrT"
+    },
+    "expected_tokens": "simulated,descope,ceasefireWidget,optimizing,l1X9!qrT",
+    "expected_status": 200
+  },
+  {
+    "description": "Pipe-split, pipe-join",
+    "request": {
+      "command": "TOKENIZE",
+      "parsing_protocol": "DELIMITED_STRING_SPLIT",
+      "output_format_spec": { "split_delimiter": "|", "join_delimiter": "|" },
+      "payload_data": "alpha|beta|gamma"
+    },
+    "expected_tokens": "alpha|beta|gamma",
+    "expected_status": 200
+  },
+  {
+    "description": "Comma-split, space-join",
+    "request": {
+      "command": "TOKENIZE",
+      "parsing_protocol": "DELIMITED_STRING_SPLIT",
+      "output_format_spec": { "split_delimiter": ",", "join_delimiter": " " },
+      "payload_data": "one,two,three"
+    },
+    "expected_tokens": "one two three",
+    "expected_status": 200
+  }
+]

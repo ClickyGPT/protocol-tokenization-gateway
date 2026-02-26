@@ -1,0 +1,20 @@
+[
+  {
+    "description": "1KB space-delimited payload",
+    "request": {
+      "command": "TOKENIZE",
+      "parsing_protocol": "DELIMITED_STRING_SPLIT",
+      "output_format_spec": { "split_delimiter": " ", "join_delimiter": "," },
+      "payload_data": "token0001 token0002 token0003 token0004 token0005 token0006 token0007 token0008 token0009 token0010 token0011 token0012 token0013 token0014 token0015 token0016 token0017 token0018 token0019 token0020 token0021 token0022 token0023 token0024 token0025 token0026 token0027 token0028 token0029 token0030 token0031 token0032 token0033 token0034 token0035 token0036 token0037 token0038 token0039 token0040 token0041 token0042 token0043 token0044 token0045 token0046 token0047 token0048 token0049 token0050 token0051 token0052 token0053 token0054 token0055 token0056 token0057 token0058 token0059 token0060 token0061 token0062 token0063 token0064 token0065 token0066 token0067 token0068 token0069 token0070 token0071 token0072 token0073 token0074 token0075 token0076 token0077 token0078 token0079 token0080 token0081 token0082 token0083 token0084 token0085 token0086 token0087 token0088 token0089 token0090"
+    }
+  },
+  {
+    "description": "Pipe-delimited 1KB payload",
+    "request": {
+      "command": "TOKENIZE",
+      "parsing_protocol": "DELIMITED_STRING_SPLIT",
+      "output_format_spec": { "split_delimiter": "|", "join_delimiter": "," },
+      "payload_data": "alpha|bravo|charlie|delta|echo|foxtrot|golf|hotel|india|juliet|kilo|lima|mike|november|oscar|papa|quebec|romeo|sierra|tango|uniform|victor|whiskey|xray|yankee|zulu|alpha2|bravo2|charlie2|delta2|echo2|foxtrot2|golf2|hotel2|india2|juliet2|kilo2|lima2|mike2|november2|oscar2|papa2|quebec2|romeo2|sierra2|tango2|uniform2|victor2|whiskey2|xray2|yankee2"
+    }
+  }
+]

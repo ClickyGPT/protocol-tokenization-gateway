@@ -1,0 +1,141 @@
+openapi: 3.1.0
+info:
+  title: Protocol Tokenization Gateway
+  version: 1.0.0
+  description: |
+    Stateless REST microservice for structured payload tokenization.
+    Exposes a single `POST /parse` endpoint that accepts a JSON command
+    and returns tokenized output.
+  contact:
+    name: ClickyGPT
+    url: https://github.com/ClickyGPT/protocol-tokenization-gateway
+
+servers:
+  - url: http://localhost:3000
+    description: Local development
+
+paths:
+  /health:
+    get:
+      summary: Health check
+      responses:
+        '200':
+          description: Service healthy
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: ok
+
+  /parse:
+    post:
+      summary: Tokenize payload data
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ParseRequest'
+            example:
+              command: TOKENIZE
+              parsing_protocol: DELIMITED_STRING_SPLIT
+              output_format_spec:
+                split_delimiter: ' '
+                join_delimiter: ','
+              payload_data: 'simulated descope ceasefireWidget optimizing l1X9!qrT'
+      responses:
+        '200':
+          description: Successful tokenization
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ParseResponse'
+        '400':
+          description: Schema validation failure
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationError'
+        '422':
+          description: Unprocessable payload
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ParseError'
+
+components:
+  schemas:
+    ParseRequest:
+      type: object
+      required: [command, parsing_protocol, output_format_spec, payload_data]
+      properties:
+        command:
+          type: string
+          example: TOKENIZE
+        parsing_protocol:
+          type: string
+          enum: [DELIMITED_STRING_SPLIT]
+        output_format_spec:
+          type: object
+          required: [split_delimiter, join_delimiter]
+          properties:
+            split_delimiter:
+              type: string
+              minLength: 1
+              maxLength: 10
+              example: ' '
+            join_delimiter:
+              type: string
+              minLength: 0
+              maxLength: 10
+              example: ','
+        payload_data:
+          type: string
+          example: 'hello world'
+
+    ParseResponse:
+      type: object
+      properties:
+        request_id:
+          type: string
+          format: uuid
+        tokens:
+          type: string
+          example: 'simulated,descope,ceasefireWidget'
+        token_count:
+          type: integer
+          example: 3
+        latency_ms:
+          type: integer
+          example: 4
+
+    ValidationError:
+      type: object
+      properties:
+        error:
+          type: string
+          example: VALIDATION_FAILED
+        fields:
+          type: array
+          items:
+            type: object
+            properties:
+              field:
+                type: string
+              reason:
+                type: string
+
+    ParseError:
+      type: object
+      properties:
+        error:
+          type: string
+          example: UNPROCESSABLE_PAYLOAD
+        message:
+          type: string
+        request_id:
+          type: string
+          format: uuid

@@ -1,0 +1,79 @@
+[
+  {
+    "description": "Empty payload_data yields empty token list",
+    "request": {
+      "command": "TOKENIZE",
+      "parsing_protocol": "DELIMITED_STRING_SPLIT",
+      "output_format_spec": { "split_delimiter": " ", "join_delimiter": "," },
+      "payload_data": ""
+    },
+    "expected_tokens": "",
+    "expected_token_count": 0
+  },
+  {
+    "description": "Multiple consecutive delimiters (a  b -> a,b)",
+    "request": {
+      "command": "TOKENIZE",
+      "parsing_protocol": "DELIMITED_STRING_SPLIT",
+      "output_format_spec": { "split_delimiter": " ", "join_delimiter": "," },
+      "payload_data": "a  b"
+    },
+    "expected_tokens": "a,b",
+    "expected_token_count": 2
+  },
+  {
+    "description": "Leading delimiter stripped",
+    "request": {
+      "command": "TOKENIZE",
+      "parsing_protocol": "DELIMITED_STRING_SPLIT",
+      "output_format_spec": { "split_delimiter": " ", "join_delimiter": "," },
+      "payload_data": " hello world"
+    },
+    "expected_tokens": "hello,world",
+    "expected_token_count": 2
+  },
+  {
+    "description": "Trailing delimiter stripped",
+    "request": {
+      "command": "TOKENIZE",
+      "parsing_protocol": "DELIMITED_STRING_SPLIT",
+      "output_format_spec": { "split_delimiter": " ", "join_delimiter": "," },
+      "payload_data": "hello world "
+    },
+    "expected_tokens": "hello,world",
+    "expected_token_count": 2
+  },
+  {
+    "description": "Unicode symbols within tokens preserved",
+    "request": {
+      "command": "TOKENIZE",
+      "parsing_protocol": "DELIMITED_STRING_SPLIT",
+      "output_format_spec": { "split_delimiter": " ", "join_delimiter": "," },
+      "payload_data": "héllo wörld 日本語"
+    },
+    "expected_tokens": "héllo,wörld,日本語",
+    "expected_token_count": 3
+  },
+  {
+    "description": "Payload solely of special chars (single token)",
+    "request": {
+      "command": "TOKENIZE",
+      "parsing_protocol": "DELIMITED_STRING_SPLIT",
+      "output_format_spec": { "split_delimiter": " ", "join_delimiter": "," },
+      "payload_data": "!@#$%^&*()"
+    },
+    "expected_tokens": "!@#$%^&*()",
+    "expected_token_count": 1
+  },
+  {
+    "description": "Token >256 characters preserved without mutation",
+    "request": {
+      "command": "TOKENIZE",
+      "parsing_protocol": "DELIMITED_STRING_SPLIT",
+      "output_format_spec": { "split_delimiter": " ", "join_delimiter": "," },
+      "payload_data": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa short"
+    },
+    "expected_tokens": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa,short",
+    "expected_token_count": 2
+  }
+]

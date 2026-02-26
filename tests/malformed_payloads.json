@@ -1,0 +1,58 @@
+[
+  {
+    "description": "Missing command field",
+    "request": {
+      "parsing_protocol": "DELIMITED_STRING_SPLIT",
+      "output_format_spec": { "split_delimiter": " ", "join_delimiter": "," },
+      "payload_data": "hello world"
+    },
+    "expected_status": 400
+  },
+  {
+    "description": "Missing parsing_protocol",
+    "request": {
+      "command": "TOKENIZE",
+      "output_format_spec": { "split_delimiter": " ", "join_delimiter": "," },
+      "payload_data": "hello world"
+    },
+    "expected_status": 400
+  },
+  {
+    "description": "Invalid parsing_protocol value",
+    "request": {
+      "command": "TOKENIZE",
+      "parsing_protocol": "UNKNOWN_PROTOCOL",
+      "output_format_spec": { "split_delimiter": " ", "join_delimiter": "," },
+      "payload_data": "hello world"
+    },
+    "expected_status": 400
+  },
+  {
+    "description": "Missing output_format_spec",
+    "request": {
+      "command": "TOKENIZE",
+      "parsing_protocol": "DELIMITED_STRING_SPLIT",
+      "payload_data": "hello world"
+    },
+    "expected_status": 400
+  },
+  {
+    "description": "Missing payload_data",
+    "request": {
+      "command": "TOKENIZE",
+      "parsing_protocol": "DELIMITED_STRING_SPLIT",
+      "output_format_spec": { "split_delimiter": " ", "join_delimiter": "," }
+    },
+    "expected_status": 400
+  },
+  {
+    "description": "payload_data is not a string (number)",
+    "request": {
+      "command": "TOKENIZE",
+      "parsing_protocol": "DELIMITED_STRING_SPLIT",
+      "output_format_spec": { "split_delimiter": " ", "join_delimiter": "," },
+      "payload_data": 12345
+    },
+    "expected_status": 400
+  }
+]

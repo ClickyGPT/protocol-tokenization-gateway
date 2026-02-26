@@ -1,0 +1,58 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ptg-gateway
+  labels:
+    app: ptg-gateway
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: ptg-gateway
+  template:
+    metadata:
+      labels:
+        app: ptg-gateway
+    spec:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1001
+      containers:
+        - name: ptg-gateway
+          image: clickygpt/protocol-tokenization-gateway:latest
+          ports:
+            - containerPort: 3000
+          env:
+            - name: NODE_ENV
+              value: production
+            - name: PORT
+              value: '3000'
+            - name: PG_HOST
+              valueFrom:
+                secretKeyRef:
+                  name: ptg-secrets
+                  key: pg-host
+            - name: PG_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: ptg-secrets
+                  key: pg-password
+          resources:
+            requests:
+              cpu: '100m'
+              memory: '128Mi'
+            limits:
+              cpu: '500m'
+              memory: '512Mi'
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 3000
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 3000
+            initialDelaySeconds: 10
+            periodSeconds: 30

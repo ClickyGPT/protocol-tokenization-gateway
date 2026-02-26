@@ -1,0 +1,45 @@
+version: '3.9'
+
+services:
+  gateway:
+    build: .
+    container_name: ptg-gateway
+    ports:
+      - '3000:3000'
+    environment:
+      NODE_ENV: production
+      PORT: 3000
+      PG_HOST: postgres
+      PG_PORT: 5432
+      PG_DATABASE: tokenizer
+      PG_USER: tokenizer_user
+      PG_PASSWORD: changeme
+      LOG_LEVEL: info
+    depends_on:
+      postgres:
+        condition: service_healthy
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost:3000/health"]
+      interval: 15s
+      timeout: 5s
+      retries: 3
+
+  postgres:
+    image: postgres:15-alpine
+    container_name: ptg-postgres
+    environment:
+      POSTGRES_DB: tokenizer
+      POSTGRES_USER: tokenizer_user
+      POSTGRES_PASSWORD: changeme
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U tokenizer_user -d tokenizer"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+
+volumes:
+  pgdata:
